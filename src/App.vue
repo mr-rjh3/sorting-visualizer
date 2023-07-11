@@ -1,7 +1,5 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
 import ArrayBars from './components/ArrayBars.vue'
-import description from './components/Description.vue'
 import { ref } from 'vue'
 
 // generate random numbers for the array
