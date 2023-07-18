@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue' // import ref from vue (ref is a function that returns a reactive object)
 
 // define props defines the props that are passed to the component
 defineProps({ 
@@ -7,7 +6,6 @@ defineProps({
     array: Array,
     width: Number,
 })
-
 </script>
 
 <template>
@@ -27,9 +25,10 @@ defineProps({
     height: 100%;
     width: 100%;
     background-color: #000000;
+    overflow: auto;
 }
 .array-bar {
     background-color: #ffffff;
-    margin: 0 1px;
+    margin: 0 0.5px;
 }
 </style>

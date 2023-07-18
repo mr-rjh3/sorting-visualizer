@@ -4,7 +4,8 @@ import { ref } from 'vue'
 
 // generate random numbers for the array
 function generateRandomArray(size) {
-  width = 880 / size
+  width = Math.round(880 / size)
+  // console.log(width)
   const array = []
   for (let i = 0; i < size; i++) {
     array.push(Math.floor(Math.random() * 95) + 1)
@@ -57,7 +58,7 @@ function changeDesctiption(){
   let header = document.getElementById("description-header");
   let message = document.getElementById("description-message");
   let bigO = document.getElementById("description-bigo");
-  console.log(header);
+  // console.log(header);
   if(algorithm == "bubble"){
     header.innerText = "Bubble Sort";
     message.innerText = "Bubble sort is a sorting algorithm which compares two adjacent elements and swaps them if they are not in the intended order. this continues until the array is sorted.";
@@ -87,7 +88,7 @@ function changeDesctiption(){
     message.innerText = "Heap sort is a comparison-based sorting technique based on Binary Heap data structure. It is similar to selection sort where we first find the maximum element and place the maximum element at the end. We repeat the same process for the remaining elements.";
     bigO.innerText = "O(n log n)";
   }
-  console.log(algo);
+  // console.log(algo);
 }
 
 async function sort(array){
@@ -188,7 +189,7 @@ async function selectionSort(array){
 
 async function merge(left, right, array, fullarray, current_index){
   // helper function for merge sort to merge two arrays
-  console.log("MERGE: merging arrays " + left + " and " + right);
+  // console.log("MERGE: merging arrays " + left + " and " + right);
   let left_index = 0;
   let right_index = 0;
   let merged_index = 0;
@@ -223,13 +224,13 @@ async function merge(left, right, array, fullarray, current_index){
     right_index++;
     merged_index++;
   }
-  console.log("MERGE: merged array: " + array);
+  // console.log("MERGE: merged array: " + array);
   return array;
 }
 
 async function mergeSort(array, fullarray = array, current_index = 0){
   // Merge sort is a sorting algorithm which divides the input array into two halves, calls itself for the two halves, and then merges the two sorted halves. O(nlogn)
-    console.log("merge sort on array: " + array + "\n");
+    // console.log("merge sort on array: " + array + "\n");
     let size = array.length;
     if(size < 2){
       return;
@@ -252,7 +253,7 @@ async function mergeSort(array, fullarray = array, current_index = 0){
 
 async function quickSort(array, fullarray = array, current_index = 0){
   // Quick sort is a sorting algorithm which picks an element as pivot and partitions the given array around the picked pivot, elements smaller than pivot go to the left and larger to the right. O(nlogn)
-  console.log("quick sort on array: " + array + "\n");
+  // console.log("quick sort on array: " + array + "\n");
   let size = array.length;
   if(size < 2){
     return array;
@@ -287,7 +288,7 @@ async function quickSort(array, fullarray = array, current_index = 0){
     array[left.length + 1 + i] = right[i];
     fullarray[left.length + 1 + i + current_index] = right[i];
   }
-  console.log("quick sort on array: " + array + "\n");
+  // console.log("quick sort on array: " + array + "\n");
   return array;
 }
 
@@ -314,7 +315,7 @@ async function heapify(array, size, i){
 
 async function heapSort(array){
   // Heap sort is a sorting algorithm which first builds a max heap from the input data. The largest item is stored at the root followed by a swap with the last item in the array. The heap is then reduced in size by one and the process is repeated until the array is sorted. O(nlogn)
-  console.log("heap sort on array: " + array + "\n");
+  // console.log("heap sort on array: " + array + "\n");
   let size = array.length;
   for(let i = Math.floor(size / 2) - 1; i >= 0; i--){ // build the max heap
     // playNote(array[i] * 10, 100);
@@ -329,7 +330,7 @@ async function heapSort(array){
     array[i] = temp;
     await heapify(array, i, 0);
   }
-  console.log("heap sort on array: " + array + "\n");
+  // console.log("heap sort on array: " + array + "\n");
   return array;
 
 }
@@ -342,39 +343,41 @@ async function heapSort(array){
 
   <!-- Forms to edit size of array and width of bar -->
   <div class="edit-box">
-    <form>
+    <div class="options-wrapper">
+      <form>
+        <label class="sound-label" for="sound">Mute Sound:
+          <div class="switch">
+            <input type="checkbox" id="sound" name="sound" v-model="playSounds">
+            <span class="slider-toggle round"></span>
+          </div>
+        </label>
+        <label for="size">Size of Array:
+          <span id="slider-value">{{array.length}}</span>
+        </label>
+        <input type="range" class="slider" id="size" name="size" min="1" max="250" v-model="array.length" @input="array = generateRandomArray(array.length)">
       
-      <label class="sound-label" for="sound">Mute Sound:
-        <div class="switch">
-          <input type="checkbox" id="sound" name="sound" v-model="playSounds">
-          <span class="slider-toggle round"></span>
-        </div>
-      </label>
-
-      <label for="size">Size of Array:
-        <span id="slider-value">{{array.length}}</span>
-      </label>
-      <input type="range" class="slider" id="size" name="size" min="1" max="250" v-model="array.length" @input="array = generateRandomArray(array.length)">
+        <label for="width">Speed of Sorting:
+          <span id="slider-value">{{speed}}ms</span>
+        </label>
+        <input type="range" class="slider" id="speed" name="speed" min="1" max="100" v-model="speed">
+        <!-- input for sorting algo -->
+        <label for="algo">Sorting Algorithm:</label>
+        <select name="algo" id="algo" @input="changeDesctiption()">
+          <option value="bubble">Bubble Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="merge">Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+          <option value="heap">Heap Sort</option>
+        </select>
       
-      <label for="width">Speed of Sorting:
-        <span id="slider-value">{{speed}}ms</span>
-      </label>
-      <input type="range" class="slider" id="speed" name="speed" min="1" max="100" v-model="speed">
-      <!-- input for sorting algo -->
-      <label for="algo">Sorting Algorithm:</label>
-      <select name="algo" id="algo" @input="changeDesctiption()">
-        <option value="bubble">Bubble Sort</option>
-        <option value="insertion">Insertion Sort</option>
-        <option value="selection">Selection Sort</option>
-        <option value="merge">Merge Sort</option>
-        <option value="quick">Quick Sort</option>
-        <option value="heap">Heap Sort</option>
-      </select>
-      <button id="shuffle" @click="array = generateRandomArray(array.length)">Shuffle!</button>
-      <button id="sort" @click="sort(array)">Sort!</button>
+      </form>
       
-    </form>
-    
+      <div class="button-wrapper">
+        <button id="sort" @click="sort(array)">Sort!</button>
+        <button id="shuffle" @click="array = generateRandomArray(array.length)">Shuffle!</button>
+      </div>
+    </div>
     
     <!-- Description of sorting algorithm (updates when algo is changed)-->
     <div id="description">
@@ -411,13 +414,26 @@ async function heapSort(array){
   align-content: center;
   min-width: 25%;
   max-width: 25%;
+  overflow: auto;
 }
-
-form {
+.options-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.options-wrapper > * {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.button-wrapper {
+  flex-direction: row;
+  margin: 1rem;
+}
+.button-wrapper > * {
+  margin: 0 0.5rem;
 }
 
 label {
@@ -508,6 +524,8 @@ select {
   cursor: pointer;
   transition: 0.2s;
 }
+
+
 
 button {
   margin: 0.5rem 0;
