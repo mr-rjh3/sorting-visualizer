@@ -370,11 +370,11 @@ async function heapSort(array){
         <option value="quick">Quick Sort</option>
         <option value="heap">Heap Sort</option>
       </select>
+      <button id="shuffle" @click="array = generateRandomArray(array.length)">Shuffle!</button>
+      <button id="sort" @click="sort(array)">Sort!</button>
       
     </form>
     
-    <button id="shuffle" @click="array = generateRandomArray(array.length)">Shuffle!</button>
-    <button id="sort" @click="sort(array)">Sort!</button>
     
     <!-- Description of sorting algorithm (updates when algo is changed)-->
     <div id="description">
@@ -397,6 +397,9 @@ async function heapSort(array){
 </template>
 
 <style scoped>
+
+
+
 .edit-box {
   height: 100%;
   padding: 1rem;
@@ -405,10 +408,9 @@ async function heapSort(array){
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-content: center;
   min-width: 25%;
   max-width: 25%;
-  overflow: auto;
 }
 
 form {
@@ -579,6 +581,30 @@ button:disabled {
     font-size: 1.2rem;
     font-weight: 400;
     margin-bottom: 15px;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .edit-box {
+    max-width: 100%;
+    width: 100%;
+    height: 30%;
+    min-height: 50%;
+    padding: 0;
+    align-items: center;
+  }
+  .edit-box form {
+    width: 50%;
+    height: 70%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: center;
+  }
+  .description-container {
+    display: none;
+  }
+  
 }
 
 </style>
